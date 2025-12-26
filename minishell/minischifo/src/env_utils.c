@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:55 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:36:57 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:16:07 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**copy_envp(char **envp)
 	count = 0;
 	while (envp[count])
 		count++;
-	copy = malloc(sizeof(char *) * (count + 1));
+	copy = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!copy)
 		return (NULL);
 	i = 0;

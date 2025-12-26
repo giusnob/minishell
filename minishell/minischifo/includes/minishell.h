@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/26 20:06:09 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/26 23:39:37 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ t_token				*handle_redir_out(char **input);
 
 /* === PARSER === */
 t_cmd				*parser(t_token *tokens);
+void				free_cmd(t_cmd *cmd);
 void				free_cmd_list(t_cmd *cmd_list);
 
 /* === PARSER UTILS === */

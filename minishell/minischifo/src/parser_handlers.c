@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:30:01 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 17:45:34 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:14:56 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
 	arg_count = count_args(*tokens);
 	if (arg_count == 0)
 		return (1);
-	cmd->args = malloc(sizeof(char *) * (arg_count + 1));
+	cmd->args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!cmd->args)
 		return (0);
 	i = 0;

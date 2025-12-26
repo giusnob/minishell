@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 18:50:01 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:01:56 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:20:39 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	*init_pipeline(t_data *data, int *num_cmds)
 	int	*pids;
 
 	*num_cmds = count_commands(data->cmd_list);
-	pids = malloc(sizeof(int) * (*num_cmds));
+	pids = (int *)malloc(sizeof(int) * (*num_cmds));
 	return (pids);
 }
 

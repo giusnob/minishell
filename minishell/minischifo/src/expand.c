@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:20 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:58:45 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:17:50 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*extract_var_name(char *str, int *len)
 		*len = 1;
 		return (NULL);
 	}
-	name = malloc(sizeof(char) * i);
+	name = (char *)malloc(sizeof(char) * i);
 	if (!name)
 		return (NULL);
 	ft_strncpy(name, str + 1, i - 1);

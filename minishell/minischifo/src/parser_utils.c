@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:08 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 17:03:09 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:20:14 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_cmd	*create_cmd(void)
 {
 	t_cmd	*cmd;
 
-	cmd = malloc(sizeof(t_cmd));
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
@@ -31,7 +31,7 @@ t_redir	*create_redir(t_redir_type type, char *file)
 {
 	t_redir	*redir;
 
-	redir = malloc(sizeof(t_redir));
+	redir = (t_redir *)malloc(sizeof(t_redir));
 	if (!redir)
 		return (NULL);
 	redir->type = type;

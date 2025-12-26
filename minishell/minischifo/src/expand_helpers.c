@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 19:50:52 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 20:12:06 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:17:32 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ char	*expand_variables(char *str, t_data *data)
 
 	if (!str)
 		return (NULL);
-	result = malloc(sizeof(char) * (calculate_expanded_len(str, data) + 1));
+	result = (char *)malloc(sizeof(char)
+			* (calculate_expanded_len(str, data) + 1));
 	if (!result)
 		return (NULL);
 	i = 0;

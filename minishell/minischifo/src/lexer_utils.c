@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:45 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 17:02:46 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:19:02 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_token	*create_token(t_token_type type, char *value)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->type = type;
@@ -66,7 +66,7 @@ char	*extract_single_quote(char **input)
 		print_error("lexer", "unclosed single quote");
 		return (NULL);
 	}
-	word = malloc(sizeof(char) * (len + 1));
+	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
 	ft_strncpy(word, start, len);
@@ -94,7 +94,7 @@ char	*extract_double_quote(char **input, t_data *data)
 		print_error("lexer", "unclosed double quote");
 		return (NULL);
 	}
-	word = malloc(sizeof(char) * (len + 1));
+	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
 	ft_strncpy(word, start, len);

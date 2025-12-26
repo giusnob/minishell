@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 19:35:22 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:36:10 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:16:38 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	add_new_env(t_data *data, char *key, char *value, int count)
 	char	*new_entry;
 	int		i;
 
-	new_envp = malloc(sizeof(char *) * (count + 2));
+	new_envp = (char **)malloc(sizeof(char *) * (count + 2));
 	if (!new_envp)
 		return (ERROR);
 	i = 0;
@@ -92,7 +92,7 @@ static char	**copy_env_without_key(char **envp, char *key, int key_len)
 	int		i;
 	int		j;
 
-	new_envp = malloc(sizeof(char *)
+	new_envp = (char **)malloc(sizeof(char *)
 			* (count_env_without_key(envp, key, key_len) + 1));
 	if (!new_envp)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:50 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 17:02:52 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:19:16 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*extract_word(char **input, t_data *data)
 		(*input)[len] != '|' && (*input)[len] != '<' && (*input)[len] != '>' &&
 		(*input)[len] != '\'' && (*input)[len] != '"')
 		len++;
-	word = malloc(sizeof(char) * (len + 1));
+	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
 	ft_strncpy(word, start, len);

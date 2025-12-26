@@ -6,23 +6,46 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:14 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 17:49:02 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:05:48 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 static t_cmd	*process_command(t_token **tokens);
+static int		process_command_loop(t_cmd *cmd, t_token **current);
 
-static int	handle_process_result(int result, t_cmd *cmd)
+void	free_cmd(t_cmd *cmd)
 {
-	if (result == 0)
+	t_redir	*tmp_redir;
+
+	if (!cmd)
+		return ;
+	if (cmd->args)
+		free_array(cmd->args);
+	while (cmd->redirs)
 	{
-		free_cmd_list(cmd);
-		return (0);
+		tmp_redir = cmd->redirs;
+		cmd->redirs = cmd->redirs->next;
+		if (tmp_redir->file)
+			free(tmp_redir->file);
+		free(tmp_redir);
 	}
-	if (result == -1)
-		return (-1);
+	free(cmd);
+}
+
+static int	process_command_loop(t_cmd *cmd, t_token **current)
+{
+	int	result;
+
+	while (*current && (*current)->type != TOKEN_PIPE)
+	{
+		result = process_token(cmd, current);
+		if (result == 0)
+			return (0);
+		if (result == -1)
+			break ;
+	}
 	return (1);
 }
 
@@ -31,23 +54,20 @@ static t_cmd	*process_command(t_token **tokens)
 {
 	t_cmd	*cmd;
 	t_token	*current;
-	int		result;
 
 	cmd = create_cmd();
 	if (!cmd)
 		return (NULL);
 	current = *tokens;
-	while (current && current->type != TOKEN_PIPE)
+	if (!process_command_loop(cmd, &current))
 	{
-		result = process_token(cmd, &current);
-		result = handle_process_result(result, cmd);
-		if (result <= 0)
-			break ;
+		free_cmd(cmd);
+		return (NULL);
 	}
 	*tokens = current;
 	if (!cmd->args)
 	{
-		free_cmd_list(cmd);
+		free_cmd(cmd);
 		return (NULL);
 	}
 	return (cmd);
@@ -82,22 +102,11 @@ t_cmd	*parser(t_token *tokens)
 void	free_cmd_list(t_cmd *cmd_list)
 {
 	t_cmd	*tmp_cmd;
-	t_redir	*tmp_redir;
 
 	while (cmd_list)
 	{
 		tmp_cmd = cmd_list;
 		cmd_list = cmd_list->next;
-		if (tmp_cmd->args)
-			free_array(tmp_cmd->args);
-		while (tmp_cmd->redirs)
-		{
-			tmp_redir = tmp_cmd->redirs;
-			tmp_cmd->redirs = tmp_cmd->redirs->next;
-			if (tmp_redir->file)
-				free(tmp_redir->file);
-			free(tmp_redir);
-		}
-		free(tmp_cmd);
+		free_cmd(tmp_cmd);
 	}
 }

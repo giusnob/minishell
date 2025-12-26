@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:49 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 18:01:33 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:21:40 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*get_next_word(char const **s, char c)
 	len = 0;
 	while ((*s)[len] && (*s)[len] != c)
 		len++;
-	word = malloc(sizeof(char) * (len + 1));
+	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);
 	len = 0;
@@ -87,7 +87,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	words = count_words(s, c);
-	result = malloc(sizeof(char *) * (words + 1));
+	result = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!result)
 		return (NULL);
 	i = 0;

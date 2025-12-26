@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:44 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 18:00:32 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:21:24 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strdup(const char *s)
 	len = 0;
 	while (s[len])
 		len++;
-	dup = malloc(sizeof(char) * (len + 1));
+	dup = (char *)malloc(sizeof(char) * (len + 1));
 	if (!dup)
 		return (NULL);
 	i = 0;
@@ -52,7 +52,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		len1++;
 	while (s2[len2])
 		len2++;
-	result = malloc(sizeof(char) * (len1 + len2 + 1));
+	result = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
 	if (!result)
 		return (NULL);
 	i = -1;
