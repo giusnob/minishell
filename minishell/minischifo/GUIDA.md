@@ -1,6 +1,6 @@
 # 📚 GUIDA COMPLETA MINISHELL - TEORIA E LOGICA
 
-**Created with ❤️ by Giusmery & Giulia** 🌙
+Created with ❤️ 
 
 ---
 
