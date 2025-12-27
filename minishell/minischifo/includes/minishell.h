@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/27 20:38:48 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 21:36:26 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void				cleanup_data(t_data *data);
 /* === SIGNALS === */
 void				setup_signals(void);
 void				handle_sigint(int sig);
-void				handle_sigquit(int sig);
 
 /* === LEXER === */
 t_token				*lexer(char *input, t_data *data);

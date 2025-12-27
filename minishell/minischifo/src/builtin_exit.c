@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:12 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 18:09:00 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 21:51:15 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ static int	ft_atoi(const char *str)
 	return (sign * result);
 }
 
+/* Cleanup parziale per exit (senza liberare cmd_list) */
+static void	cleanup_for_exit(t_data *data)
+{
+	if (data->envp)
+		free_envp(data->envp);
+	close(data->stdin_backup);
+	close(data->stdout_backup);
+	clear_history();
+}
+
 int	builtin_exit(char **args, t_data *data)
 {
 	int		exit_code;
@@ -67,13 +77,13 @@ int	builtin_exit(char **args, t_data *data)
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (!args[1])
 	{
-		cleanup_data(data);
+		cleanup_for_exit(data);
 		exit(data->last_exit_status);
 	}
 	if (!is_numeric(args[1]))
 	{
 		print_error("exit", "numeric argument required");
-		cleanup_data(data);
+		cleanup_for_exit(data);
 		exit(2);
 	}
 	if (args[2])
@@ -82,6 +92,6 @@ int	builtin_exit(char **args, t_data *data)
 		return (ERROR);
 	}
 	exit_code = ft_atoi(args[1]);
-	cleanup_data(data);
+	cleanup_for_exit(data);
 	exit(exit_code % 256);
 }
