@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:19 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:42:31 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 19:51:22 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ static int	parse_export_arg(char *arg, char **key, char **value)
 		if (!*value)
 		{
 			free(*key);
-			return (0);
+			return (-1);
 		}
+		return (1);
 	}
-	else
-		*value = ft_strdup("");
-	return (1);
+	*value = NULL;
+	return (0);
 }
 
 /* Processa un singolo argomento export */
@@ -85,19 +85,23 @@ static int	process_export_arg(char *arg, t_data *data)
 {
 	char	*key;
 	char	*value;
+	int		has_equal;
 
-	if (parse_export_arg(arg, &key, &value))
+	has_equal = parse_export_arg(arg, &key, &value);
+	if (has_equal == -1)
+	{
+		print_error("export", "invalid identifier");
+		return (ERROR);
+	}
+	if (has_equal == 1)
 	{
 		set_env_value(key, value, data);
 		free(key);
 		free(value);
 		return (SUCCESS);
 	}
-	else
-	{
-		print_error("export", "invalid identifier");
-		return (ERROR);
-	}
+	free(key);
+	return (SUCCESS);
 }
 
 /* Se non ci sono argomenti, stampa tutte le variabili */
