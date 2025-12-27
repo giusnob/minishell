@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:08 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 00:20:14 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 13:24:54 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_redir	*create_redir(t_redir_type type, char *file)
 		free(redir);
 		return (NULL);
 	}
+	redir->heredoc_content = NULL;
 	redir->next = NULL;
 	return (redir);
 }

@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:33 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:18:06 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 14:06:34 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	open_redir_file(t_redir *redir)
 			print_error(redir->file, "cannot create file");
 	}
 	else if (redir->type == REDIR_HEREDOC)
-		fd = handle_heredoc(redir->file);
+		fd = handle_heredoc(redir->heredoc_content);
 	return (fd);
 }
 

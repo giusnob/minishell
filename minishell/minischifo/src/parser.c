@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:14 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 01:11:47 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 14:08:47 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	free_cmd(t_cmd *cmd)
 		cmd->redirs = cmd->redirs->next;
 		if (tmp_redir->file)
 			free(tmp_redir->file);
+		if (tmp_redir->heredoc_content)
+			free(tmp_redir->heredoc_content);
 		free(tmp_redir);
 	}
 	free(cmd);

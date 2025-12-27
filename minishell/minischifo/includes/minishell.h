@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/27 01:44:49 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 14:36:56 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*file;
+	char			*heredoc_content;
 	struct s_redir	*next;
 }	t_redir;
 /* Struttura per un singolo comando */
@@ -177,7 +178,8 @@ void				restore_std_fds(t_data *data);
 
 /* === REDIRECTIONS UTILS === */
 int					ft_strlen_custom(char *str);
-int					handle_heredoc(char *delimiter);
+int					handle_heredoc(char *content);
+char				*read_heredoc_content(char *delimiter);
 
 /* === PIPES === */
 int					execute_pipeline(t_data *data);

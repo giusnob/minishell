@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:30:01 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 01:43:16 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 15:41:41 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,20 @@ int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
 	return (1);
 }
 
+/* Helper: processa heredoc in una redirection */
+static int	process_heredoc_redir(t_redir *redir, char *delimiter)
+{
+	redir->heredoc_content = read_heredoc_content(delimiter);
+	if (!redir->heredoc_content)
+	{
+		if (redir->file)
+			free(redir->file);
+		free(redir);
+		return (0);
+	}
+	return (1);
+}
+
 /* Gestisce una redirection e avanza nei token */
 int	handle_redirection(t_cmd *cmd, t_token **tokens)
 {
@@ -71,6 +85,11 @@ int	handle_redirection(t_cmd *cmd, t_token **tokens)
 	new_redir = create_redir(type, current->value);
 	if (!new_redir)
 		return (0);
+	if (type == REDIR_HEREDOC)
+	{
+		if (!process_heredoc_redir(new_redir, current->value))
+			return (0);
+	}
 	add_redir(&cmd->redirs, new_redir);
 	*tokens = current->next;
 	return (1);
