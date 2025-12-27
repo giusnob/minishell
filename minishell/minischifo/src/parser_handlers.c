@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:30:01 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 00:14:56 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 01:43:16 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,7 @@
 
 static t_redir_type	get_redir_type(t_token_type token_type);
 
-/* Aggiunge gli argomenti al comando */
-int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
-{
-	int		i;
-	int		arg_count;
-	t_token	*current;
-
-	arg_count = count_args(*tokens);
-	if (arg_count == 0)
-		return (1);
-	cmd->args = (char **)malloc(sizeof(char *) * (arg_count + 1));
-	if (!cmd->args)
-		return (0);
-	i = 0;
-	current = *tokens;
-	while (i < arg_count)
-	{
-		cmd->args[i] = ft_strdup(current->value);
-		if (!cmd->args[i])
-			return (0);
-		i++;
-		current = current->next;
-	}
-	cmd->args[i] = NULL;
-	*tokens = current;
-	return (1);
-}
-
+/* Determina il tipo di redirection */
 static t_redir_type	get_redir_type(t_token_type token_type)
 {
 	if (token_type == TOKEN_REDIR_IN)
@@ -53,6 +26,31 @@ static t_redir_type	get_redir_type(t_token_type token_type)
 	else if (token_type == TOKEN_REDIR_HEREDOC)
 		return (REDIR_HEREDOC);
 	return (REDIR_IN);
+}
+
+/* Aggiunge UN SINGOLO argomento al comando */
+int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
+{
+	int		count;
+	char	**new_args;
+
+	count = count_current_args(cmd->args);
+	new_args = alloc_new_args(count);
+	if (!new_args)
+		return (0);
+	copy_old_args(new_args, cmd->args, count);
+	new_args[count] = ft_strdup((*tokens)->value);
+	if (!new_args[count])
+	{
+		free(new_args);
+		return (0);
+	}
+	new_args[count + 1] = NULL;
+	if (cmd->args)
+		free(cmd->args);
+	cmd->args = new_args;
+	*tokens = (*tokens)->next;
+	return (1);
 }
 
 /* Gestisce una redirection e avanza nei token */
@@ -78,7 +76,8 @@ int	handle_redirection(t_cmd *cmd, t_token **tokens)
 	return (1);
 }
 
-int	process_token(t_cmd	*cmd, t_token **current)
+/* Processa un singolo token */
+int	process_token(t_cmd *cmd, t_token **current)
 {
 	if ((*current)->type == TOKEN_WORD)
 	{
