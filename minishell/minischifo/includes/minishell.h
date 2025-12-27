@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/27 01:13:10 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 01:44:49 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,9 @@ void				add_cmd(t_cmd **head, t_cmd *new_cmd);
 int					add_args_to_cmd(t_cmd *cmd, t_token **tokens);
 int					handle_redirection(t_cmd *cmd, t_token **tokens);
 int					process_token(t_cmd *cmd, t_token **current);
+int					count_current_args(char **args);
+char				**alloc_new_args(int count);
+void				copy_old_args(char **new_args, char **old_args, int count);
 
 /* === EXPANSION === */
 char				*expand_variables(char *str, t_data *data);
