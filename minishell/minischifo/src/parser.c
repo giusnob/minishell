@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:14 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 00:05:48 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 01:11:47 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ t_cmd	*parser(t_token *tokens)
 	t_token	*current;
 
 	if (!tokens)
+		return (NULL);
+	if (!validate_tokens(tokens))
 		return (NULL);
 	cmd_list = NULL;
 	current = tokens;
