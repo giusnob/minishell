@@ -6,7 +6,7 @@
 #    By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/26 16:59:28 by ginobile          #+#    #+#              #
-#    Updated: 2025/12/26 21:28:51 by ginobile         ###   ########.fr        #
+#    Updated: 2025/12/27 01:45:30 by ginobile         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,9 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/lexer_handlers.c \
 			  $(SRC_DIR)/parser.c \
 			  $(SRC_DIR)/parser_utils.c \
+			  $(SRC_DIR)/parser_validator.c \
 			  $(SRC_DIR)/parser_handlers.c \
+			  $(SRC_DIR)/parser_handlers_utils.c \
 			  $(SRC_DIR)/executor.c \
 			  $(SRC_DIR)/path_utils.c \
 			  $(SRC_DIR)/expand.c \
