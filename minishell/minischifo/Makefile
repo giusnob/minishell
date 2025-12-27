@@ -6,7 +6,7 @@
 #    By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/26 16:59:28 by ginobile          #+#    #+#              #
-#    Updated: 2025/12/27 01:45:30 by ginobile         ###   ########.fr        #
+#    Updated: 2025/12/27 20:41:58 by ginobile         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/signals.c \
 			  $(SRC_DIR)/lexer.c \
 			  $(SRC_DIR)/lexer_utils.c \
+			  $(SRC_DIR)/lexer_helpers.c \
 			  $(SRC_DIR)/lexer_handlers.c \
 			  $(SRC_DIR)/parser.c \
 			  $(SRC_DIR)/parser_utils.c \

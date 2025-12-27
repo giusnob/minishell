@@ -6,56 +6,42 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:50 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 00:19:16 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 20:40:25 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char		*extract_word(char **input, t_data *data);
 static t_token	*handle_operator(char **input);
 static t_token	*handle_word(char **input, t_data *data);
-
-/* Estrae una parola normale (CON espansione) */
-/* Espande le variabili */
-static char	*extract_word(char **input, t_data *data)
-{
-	char	*start;
-	int		len;
-	char	*word;
-	char	*expanded;
-
-	start = *input;
-	len = 0;
-	while ((*input)[len] && !ft_isspace((*input)[len]) &&
-		(*input)[len] != '|' && (*input)[len] != '<' && (*input)[len] != '>' &&
-		(*input)[len] != '\'' && (*input)[len] != '"')
-		len++;
-	word = (char *)malloc(sizeof(char) * (len + 1));
-	if (!word)
-		return (NULL);
-	ft_strncpy(word, start, len);
-	word[len] = '\0';
-	*input += len;
-	expanded = expand_variables(word, data);
-	free(word);
-	return (expanded);
-}
 
 /* Gestisce le parole (con o senza quote) */
 static t_token	*handle_word(char **input, t_data *data)
 {
+	char	*final_word;
 	char	*word;
+	char	*tmp;
 
-	if (**input == '\'')
-		word = extract_single_quote(input);
-	else if (**input == '"')
-		word = extract_double_quote(input, data);
-	else
-		word = extract_word(input, data);
-	if (!word)
+	final_word = ft_strdup("");
+	if (!final_word)
 		return (NULL);
-	return (create_token(TOKEN_WORD, word));
+	while (**input && !ft_isspace(**input)
+		&& **input != '|' && **input != '<' && **input != '>')
+	{
+		word = read_next_part(input, data);
+		if (!word)
+		{
+			free(final_word);
+			return (NULL);
+		}
+		tmp = final_word;
+		final_word = ft_strjoin((const char *)final_word, (const char *)word);
+		free(tmp);
+		free(word);
+		if (!final_word)
+			return (NULL);
+	}
+	return (create_token(TOKEN_WORD, final_word));
 }
 
 /* Funzione principale del lexer */

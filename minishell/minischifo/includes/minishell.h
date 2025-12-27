@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/27 14:36:56 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 20:38:48 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ void				add_token(t_token **head, t_token *new_token);
 void				skip_spaces(char **input);
 char				*extract_single_quote(char **input);
 char				*extract_double_quote(char **input, t_data *data);
+char				*read_next_part(char **input, t_data *data);
+char				*extract_word_part(char **input, t_data *data);
 
 /* === LEXER HANDLERS === */
 t_token				*handle_pipe(char **input);
@@ -234,5 +236,5 @@ void				ft_putendl_fd(char *s, int fd);
 /* === ERROR === */
 void				print_error(char *cmd, char *msg);
 void				exit_error(char *msg);
-
+void				print_error_errno(char *cmd, char *arg);
 #endif
