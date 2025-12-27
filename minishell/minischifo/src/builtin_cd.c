@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:59:43 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 16:59:45 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/27 17:45:16 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	cd_home(t_data *data, char *old_pwd)
 	}
 	if (chdir(home) == -1)
 	{
-		print_error("cd", home);
+		print_error_errno("cd", home);
 		free(home);
 		return (ERROR);
 	}
@@ -60,7 +60,7 @@ static int	cd_oldpwd(t_data *data, char *old_pwd)
 	ft_putendl_fd(oldpwd, STDOUT_FILENO);
 	if (chdir(oldpwd) == -1)
 	{
-		print_error("cd", oldpwd);
+		print_error_errno("cd", oldpwd);
 		free(oldpwd);
 		return (ERROR);
 	}
@@ -90,7 +90,7 @@ static int	cd_tilde(char *arg, t_data *data, char *old_pwd)
 		return (ERROR);
 	if (chdir(path) == -1)
 	{
-		print_error("cd", path);
+		print_error_errno("cd", path);
 		free(path);
 		return (ERROR);
 	}
@@ -113,7 +113,7 @@ int	builtin_cd(char **args, t_data *data)
 		return (cd_tilde(args[1], data, old_pwd));
 	if (chdir(args[1]) == -1)
 	{
-		print_error("cd", args[1]);
+		print_error_errno("cd", args[1]);
 		return (ERROR);
 	}
 	update_pwd(data, old_pwd);
