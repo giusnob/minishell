@@ -6,11 +6,16 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:19 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 19:51:22 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/30 00:28:43 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	print_single_export(char *env_var);
+static int	process_export_arg(char *arg, t_data *data);
+static void	handle_export_with_value(char *key, char *value, t_data *data);
+static int	process_export_arg(char *arg, t_data *data);
 
 /* Stampa una singola variabile export */
 static void	print_single_export(char *env_var)
@@ -51,33 +56,12 @@ static void	print_export_vars(t_data *data)
 	}
 }
 
-/* Estrae key e value da una stringa "KEY=VALUE" */
-static int	parse_export_arg(char *arg, char **key, char **value)
+/* Helper: gestisce export con valore */
+static void	handle_export_with_value(char *key, char *value, t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (arg[i] && arg[i] != '=')
-		i++;
-	if (i == 0)
-		return (0);
-	*key = (char *)malloc(sizeof(char) * (i + 1));
-	if (!*key)
-		return (0);
-	ft_strncpy(*key, arg, i);
-	(*key)[i] = '\0';
-	if (arg[i] == '=')
-	{
-		*value = ft_strdup(arg + i + 1);
-		if (!*value)
-		{
-			free(*key);
-			return (-1);
-		}
-		return (1);
-	}
-	*value = NULL;
-	return (0);
+	set_env_value(key, value, data);
+	free(key);
+	free(value);
 }
 
 /* Processa un singolo argomento export */
@@ -93,14 +77,19 @@ static int	process_export_arg(char *arg, t_data *data)
 		print_error("export", "invalid identifier");
 		return (ERROR);
 	}
+	if (has_equal == 0 && !key)
+	{
+		print_error("export", "not a valid identifier");
+		return (ERROR);
+	}
+	if (!validate_export_arg(key, value))
+		return (ERROR);
 	if (has_equal == 1)
 	{
-		set_env_value(key, value, data);
-		free(key);
-		free(value);
-		return (SUCCESS);
+		handle_export_with_value(key, value, data);
 	}
-	free(key);
+	else
+		free(key);
 	return (SUCCESS);
 }
 

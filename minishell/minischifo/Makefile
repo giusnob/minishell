@@ -6,7 +6,7 @@
 #    By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/26 16:59:28 by ginobile          #+#    #+#              #
-#    Updated: 2025/12/27 20:41:58 by ginobile         ###   ########.fr        #
+#    Updated: 2025/12/30 00:02:37 by ginobile         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ INC_DIR		= includes
 
 # Compiler and flags
 CC			= cc
-CFLAGS		= -Wall -Wextra -g
+CFLAGS		= -Wall -Wextra -Werror -g
 INCLUDES	= -I$(INC_DIR) -I/opt/homebrew/opt/readline/include
 LDFLAGS		= -L/opt/homebrew/opt/readline/lib -lreadline
 
@@ -60,6 +60,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/builtin_cd.c \
 			  $(SRC_DIR)/builtin_pwd.c \
 			  $(SRC_DIR)/builtin_export.c \
+			  $(SRC_DIR)/builtin_export_utils.c \
 			  $(SRC_DIR)/builtin_unset.c \
 			  $(SRC_DIR)/builtin_env.c \
 			  $(SRC_DIR)/builtin_exit.c \

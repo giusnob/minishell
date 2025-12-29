@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 19:17:17 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 15:43:54 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 23:57:26 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,22 @@ static char	*append_line_to_content(char *content, char *line)
 	return (result);
 }
 
+/* Helper: espande e appende line al contenuto */
+static char	*expand_and_append(char *content, char *line, t_data *data)
+{
+	char	*expanded;
+	char	*tmp;
+
+	expanded = expand_variables(line, data);
+	if (!expanded)
+		return (NULL);
+	tmp = append_line_to_content(content, expanded);
+	free(expanded);
+	return (tmp);
+}
+
 /* Legge il contenuto dell'heredoc e lo ritorna come stringa */
-char	*read_heredoc_content(char *delimiter)
+char	*read_heredoc_content(char *delimiter, t_data *data)
 {
 	char	*line;
 	char	*content;
@@ -75,7 +89,7 @@ char	*read_heredoc_content(char *delimiter)
 			free(line);
 			break ;
 		}
-		content = append_line_to_content(content, line);
+		content = expand_and_append(content, line, data);
 		free(line);
 		if (!content)
 			return (NULL);

@@ -6,14 +6,15 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:14 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 14:08:47 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 23:51:35 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static t_cmd	*process_command(t_token **tokens);
-static int		process_command_loop(t_cmd *cmd, t_token **current);
+static t_cmd	*process_command(t_token **tokens, t_data *data);
+static int		process_command_loop(t_cmd *cmd, t_token **current,
+					t_data *data);
 
 void	free_cmd(t_cmd *cmd)
 {
@@ -36,13 +37,13 @@ void	free_cmd(t_cmd *cmd)
 	free(cmd);
 }
 
-static int	process_command_loop(t_cmd *cmd, t_token **current)
+static int	process_command_loop(t_cmd *cmd, t_token **current, t_data *data)
 {
 	int	result;
 
 	while (*current && (*current)->type != TOKEN_PIPE)
 	{
-		result = process_token(cmd, current);
+		result = process_token(cmd, current, data);
 		if (result == 0)
 			return (0);
 		if (result == -1)
@@ -52,7 +53,7 @@ static int	process_command_loop(t_cmd *cmd, t_token **current)
 }
 
 /* Processa un singolo comando (fino alla prossima pipe) */
-static t_cmd	*process_command(t_token **tokens)
+static t_cmd	*process_command(t_token **tokens, t_data *data)
 {
 	t_cmd	*cmd;
 	t_token	*current;
@@ -61,7 +62,7 @@ static t_cmd	*process_command(t_token **tokens)
 	if (!cmd)
 		return (NULL);
 	current = *tokens;
-	if (!process_command_loop(cmd, &current))
+	if (!process_command_loop(cmd, &current, data))
 	{
 		free_cmd(cmd);
 		return (NULL);
@@ -76,7 +77,7 @@ static t_cmd	*process_command(t_token **tokens)
 }
 
 /* Funzione principale del parser */
-t_cmd	*parser(t_token *tokens)
+t_cmd	*parser(t_token *tokens, t_data *data)
 {
 	t_cmd	*cmd_list;
 	t_cmd	*new_cmd;
@@ -90,7 +91,7 @@ t_cmd	*parser(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
-		new_cmd = process_command(&current);
+		new_cmd = process_command(&current, data);
 		if (!new_cmd)
 		{
 			free_cmd_list(cmd_list);

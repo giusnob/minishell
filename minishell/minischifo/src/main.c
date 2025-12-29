@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:59 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:25:33 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 23:10:26 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ static void	process_input(t_data *data, char *input)
 		return ;
 	add_history(input);
 	tokens = lexer(input, data);
-	data->cmd_list = parser(tokens);
+	data->cmd_list = parser(tokens, data);
 	if (data->cmd_list)
 		data->last_exit_status = executor(data);
 	free_tokens(tokens);
 	free_cmd_list(data->cmd_list);
+	data->cmd_list = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)

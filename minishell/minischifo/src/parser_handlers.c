@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:30:01 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 15:41:41 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 23:18:57 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
 }
 
 /* Helper: processa heredoc in una redirection */
-static int	process_heredoc_redir(t_redir *redir, char *delimiter)
+static int	process_heredoc_redir(t_redir *redir, char *delimiter, t_data *data)
 {
-	redir->heredoc_content = read_heredoc_content(delimiter);
+	redir->heredoc_content = read_heredoc_content(delimiter, data);
 	if (!redir->heredoc_content)
 	{
 		if (redir->file)
@@ -68,7 +68,7 @@ static int	process_heredoc_redir(t_redir *redir, char *delimiter)
 }
 
 /* Gestisce una redirection e avanza nei token */
-int	handle_redirection(t_cmd *cmd, t_token **tokens)
+int	handle_redirection(t_cmd *cmd, t_token **tokens, t_data *data)
 {
 	t_redir_type	type;
 	t_redir			*new_redir;
@@ -87,7 +87,7 @@ int	handle_redirection(t_cmd *cmd, t_token **tokens)
 		return (0);
 	if (type == REDIR_HEREDOC)
 	{
-		if (!process_heredoc_redir(new_redir, current->value))
+		if (!process_heredoc_redir(new_redir, current->value, data))
 			return (0);
 	}
 	add_redir(&cmd->redirs, new_redir);
@@ -96,7 +96,7 @@ int	handle_redirection(t_cmd *cmd, t_token **tokens)
 }
 
 /* Processa un singolo token */
-int	process_token(t_cmd *cmd, t_token **current)
+int	process_token(t_cmd *cmd, t_token **current, t_data *data)
 {
 	if ((*current)->type == TOKEN_WORD)
 	{
@@ -106,7 +106,7 @@ int	process_token(t_cmd *cmd, t_token **current)
 	else if (((*current)->type >= TOKEN_REDIR_IN)
 		&& ((*current)->type <= TOKEN_REDIR_HEREDOC))
 	{
-		if (!handle_redirection(cmd, current))
+		if (!handle_redirection(cmd, current, data))
 			return (0);
 	}
 	else
