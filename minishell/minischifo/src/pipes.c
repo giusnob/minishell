@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:27 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:06:06 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 03:57:59 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,23 @@ static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
 	pid_t	pid;
 	char	*cmd_path;
 
-	cmd_path = find_command_path(cmd->args[0], data->envp);
-	if (!cmd_path)
+	if (!is_builtin(cmd->args[0]))
 	{
-		print_error(cmd->args[0], "command not found");
-		return (CMD_NOT_FOUND);
+		cmd_path = find_command_path(cmd->args[0], data->envp);
+		if (!cmd_path)
+		{
+			print_error(cmd->args[0], "command not found");
+			return (CMD_NOT_FOUND);
+		}
 	}
+	else
+		cmd_path = NULL;
 	pid = fork();
 	if (pid == -1)
 	{
 		print_error("fork", "failed");
-		free(cmd_path);
+		if (cmd_path)
+			free(cmd_path);
 		return (ERROR);
 	}
 	if (pid == 0)
@@ -40,7 +46,8 @@ static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
 		setup_child_pipes(pipe_data);
 		exec_cmd_in_pipe(data, cmd, cmd_path);
 	}
-	free(cmd_path);
+	if (cmd_path)
+		free(cmd_path);
 	return (pid);
 }
 

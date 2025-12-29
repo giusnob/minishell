@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:20 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 00:17:50 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 03:46:30 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 char	*extract_var_name(char *str, int *len)
 {
 	int		i;
+	int		start;
 	char	*name;
 
 	i = 0;
@@ -29,19 +30,39 @@ char	*extract_var_name(char *str, int *len)
 		*len = 2;
 		return (ft_strdup("?"));
 	}
+	if (str[i] == '{')
+	{
+		i++;
+		start = i;
+		while (str[i] && str[i] != '}' && (ft_isalnum(str[i]) || str[i] == '_'))
+			i++;
+		if (str[i] != '}')
+		{
+			*len = 1;
+			return (NULL);
+		}
+		name = (char *)malloc(sizeof(char) * (i - start + 1));
+		if (!name)
+			return (NULL);
+		ft_strncpy(name, str + start, i - start);
+		name[i - start] = '\0';
+		*len = i - start + 3;
+		return (name);
+	}
+	start = i;
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
-	if (i == 1)
+	if (i == start)
 	{
 		*len = 1;
 		return (NULL);
 	}
-	name = (char *)malloc(sizeof(char) * i);
+	name = (char *)malloc(sizeof(char) * (i - start + 1));
 	if (!name)
 		return (NULL);
-	ft_strncpy(name, str + 1, i - 1);
+	ft_strncpy(name, str + start, i - start);
 	name[i - 1] = '\0';
-	*len = i;
+	*len = i - start + 1;
 	return (name);
 }
 
