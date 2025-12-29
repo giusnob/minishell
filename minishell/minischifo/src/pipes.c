@@ -6,15 +6,32 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:27 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/29 03:57:59 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/29 04:53:14 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* Gestisce il path del comando (builtin o esterno) */
+static char	*get_cmd_path_for_pipe(t_cmd *cmd, char **envp)
+{
+	char	*cmd_path;
+
+	if (!is_builtin(cmd->args[0]))
+	{
+		cmd_path = find_command_path(cmd->args[0], envp);
+		if (!cmd_path)
+		{
+			print_error(cmd->args[0], "command not found");
+			return (NULL);
+		}
+		return (cmd_path);
+	}
+	return (NULL);
+}
+
 /* Esegue un comando in una pipeline */
-/* Trova il path del comando */
-/* se pid = 0 Processo figlio */
+/* Trova il path del comando se pid = 0 Processo figlio */
 /* Se non è il primo comando, leggi dalla pipe precedente */
 /* Se non è l'ultimo comando, scrivi sulla pipe corrente */
 static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
@@ -22,17 +39,9 @@ static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
 	pid_t	pid;
 	char	*cmd_path;
 
-	if (!is_builtin(cmd->args[0]))
-	{
-		cmd_path = find_command_path(cmd->args[0], data->envp);
-		if (!cmd_path)
-		{
-			print_error(cmd->args[0], "command not found");
-			return (CMD_NOT_FOUND);
-		}
-	}
-	else
-		cmd_path = NULL;
+	cmd_path = get_cmd_path_for_pipe(cmd, data->envp);
+	if (!cmd_path && !is_builtin(cmd->args[0]))
+		return (CMD_NOT_FOUND);
 	pid = fork();
 	if (pid == -1)
 	{
