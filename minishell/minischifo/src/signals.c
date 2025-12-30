@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:38 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 22:33:22 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/30 01:02:56 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	handle_sigint(int sig)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
 }
 
 /* Gestisce Ctrl-\ (SIGQUIT) */
