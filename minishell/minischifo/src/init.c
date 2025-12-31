@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:32 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 17:02:33 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 00:36:20 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,14 @@ void	cleanup_data(t_data *data)
 	close(data->stdin_backup);
 	close(data->stdout_backup);
 	clear_history();
+}
+
+void	cleanup_child(t_data *data)
+{
+	if (data->envp)
+		free_envp(data->envp);
+	if (data->cmd_list)
+		free_cmd_list(data->cmd_list);
+	close(data->stdin_backup);
+	close(data->stdout_backup);
 }
