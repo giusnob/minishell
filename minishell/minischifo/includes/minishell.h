@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/30 00:22:56 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 00:45:07 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ extern int			g_signal;
 /* === MAIN === */
 void				init_data(t_data *data, char **envp);
 void				cleanup_data(t_data *data);
+void				cleanup_child(t_data *data);
 
 /* === SIGNALS === */
 void				setup_signals(void);
