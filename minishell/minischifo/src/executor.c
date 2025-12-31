@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:03 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/31 00:38:01 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 01:42:56 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	exec_child_process(t_data *data, t_cmd *cmd, char *cmd_path)
 {
 	if (apply_redirections(cmd) != SUCCESS)
 	{
-		cleanup_data(data);
+		cleanup_child(data);
 		exit(ERROR);
 	}
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
