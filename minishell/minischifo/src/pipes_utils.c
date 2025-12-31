@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 18:32:26 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/29 04:19:14 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 00:41:50 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,23 @@ void	exec_cmd_in_pipe(t_data *data, t_cmd *cmd, char *cmd_path)
 	if (cmd->redirs)
 	{
 		if (apply_redirections(cmd) != SUCCESS)
+		{
+			cleanup_child(data);
 			exit(ERROR);
+		}
 	}
 	if (is_builtin(cmd->args[0]))
 	{
 		exit_status = exec_builtin(data, cmd);
+		cleanup_child(data);
 		exit(exit_status);
 	}
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
 		print_error(cmd->args[0], "execution failed");
+		if (cmd_path)
+			free(cmd_path);
+		cleanup_child(data);
 		exit(CMD_NOT_EXECUTABLE);
 	}
 }
