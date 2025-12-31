@@ -6,7 +6,7 @@
 #    By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/26 16:59:28 by ginobile          #+#    #+#              #
-#    Updated: 2025/12/30 00:02:37 by ginobile         ###   ########.fr        #
+#    Updated: 2025/12/31 02:29:51 by ginobile         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/builtin_exit.c \
 			  $(SRC_DIR)/env_utils.c \
 			  $(SRC_DIR)/env_utils2.c \
+			  $(SRC_DIR)/export_marks_utils.c \
 			  $(SRC_DIR)/utils.c \
 			  $(SRC_DIR)/utils2.c \
 			  $(SRC_DIR)/utils_fd.c \
