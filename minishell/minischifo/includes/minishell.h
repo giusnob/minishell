@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/31 00:45:07 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 01:55:54 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_cmd
 typedef struct s_data
 {
 	char			**envp;			// environment variables
+	char			**export_marks;		//variabili marked for export (no value)
 	t_cmd			*cmd_list;		// lista dei comandi
 	int				last_exit_status;	// exit status dell'ultimo comando ($?)
 	int				stdin_backup;	// backup di stdin
@@ -228,6 +229,11 @@ char				**copy_envp(char **envp);
 void				free_envp(char **envp);
 int					set_env_value(char *key, char *value, t_data *data);
 int					unset_env_value(char *key, t_data *data);
+
+/* === EXPORT MARKS === */
+void				add_export_mark(char *key, t_data *data);
+void				remove_export_mark(char *key, t_data *data);
+int					is_marked_for_export(char *key, t_data *data);
 
 /* === UTILS === */
 char				*ft_strdup(const char *s);
