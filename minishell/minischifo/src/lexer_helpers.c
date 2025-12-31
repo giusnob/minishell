@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 20:35:30 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 20:42:28 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 03:02:32 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ char	*extract_word_part(char **input, t_data *data)
 		(*input)[len] != '>' && (*input)[len] != '\'' &&
 		(*input)[len] != '"')
 		len++;
+	if (len == 1 && start[0] == '$' && start[1] == '"')
+	{
+		*input += len;
+		return (ft_strdup(""));
+	}
 	word = (char *)malloc(sizeof(char) * (len + 1));
 	if (!word)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:19 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/30 00:28:43 by ginobile         ###   ########.fr       */
+/*   Updated: 2025/12/31 02:41:57 by ginobile         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	print_single_export(char *env_var);
 static int	process_export_arg(char *arg, t_data *data);
 static void	handle_export_with_value(char *key, char *value, t_data *data);
 static int	process_export_arg(char *arg, t_data *data);
+static void	print_export_marks(t_data *data);
 
 /* Stampa una singola variabile export */
 static void	print_single_export(char *env_var)
@@ -43,6 +44,23 @@ static void	print_single_export(char *env_var)
 	write(STDOUT_FILENO, "\n", 1);
 }
 
+/* Stampa export marks (variabili senza valore) */
+static void	print_export_marks(t_data *data)
+{
+	int	i;
+
+	if (!data->export_marks)
+		return ;
+	i = 0;
+	while (data->export_marks[i])
+	{
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(data->export_marks[i], STDOUT_FILENO);
+		write(STDOUT_FILENO, "\n", 1);
+		i++;
+	}
+}
+
 /* Stampa tutte le variabili d'ambiente in formato export */
 static void	print_export_vars(t_data *data)
 {
@@ -54,7 +72,10 @@ static void	print_export_vars(t_data *data)
 		print_single_export(data->envp[i]);
 		i++;
 	}
+	print_export_marks(data);
 }
+
+
 
 /* Helper: gestisce export con valore */
 static void	handle_export_with_value(char *key, char *value, t_data *data)
@@ -86,10 +107,15 @@ static int	process_export_arg(char *arg, t_data *data)
 		return (ERROR);
 	if (has_equal == 1)
 	{
+		remove_export_mark(key, data);
 		handle_export_with_value(key, value, data);
 	}
 	else
+	{
+		if (!get_env_value(key, data->envp))
+			add_export_mark(key, data);
 		free(key);
+	}
 	return (SUCCESS);
 }
 
