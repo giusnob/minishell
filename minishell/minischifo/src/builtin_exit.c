@@ -67,6 +67,7 @@ static void	cleanup_for_exit(t_data *data)
 		free_envp(data->envp);
 	close(data->stdin_backup);
 	close(data->stdout_backup);
+	free_cmd_list(data->cmd_list);
 	clear_history();
 }
 
