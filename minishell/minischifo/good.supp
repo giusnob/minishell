@@ -1,0 +1,34 @@
+{
+    RL leaks
+    Memcheck:Leak
+    ...
+    fun:readline
+}
+{
+    RL add_history leaks
+    Memcheck:Leak
+    ...
+    fun:add_history
+}
+
+{
+   MALLOC FAILURE OF /usr/bin/*
+   Memcheck:Leak
+   fun:malloc
+   ...
+   obj:/usr/bin/*
+}
+{
+   CALLOC FAILURE of /usr/bin/*
+   Memcheck:Leak
+   fun:calloc
+   ...
+   obj:/usr/bin/*
+}
+{
+   REALLOC FAILURE of /usr/bin/*
+   Memcheck:Leak
+   fun:realloc
+   ...
+   obj:/usr/bin/*
+}

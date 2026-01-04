@@ -28,7 +28,7 @@ INC_DIR		= includes
 
 # Compiler and flags
 CC			= cc
-CFLAGS		= -Wall -Wextra -g
+CFLAGS		= -Wall -Wextra -Werror -g
 INCLUDES	= -I$(INC_DIR) -I/opt/homebrew/opt/readline/include
 LDFLAGS		= -L/opt/homebrew/opt/readline/lib -lreadline
 
@@ -70,9 +70,6 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/utils_fd.c \
 			  $(SRC_DIR)/error.c 
 
-# Object files
-OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-
 # Banner
 define BANNER
 
@@ -92,25 +89,13 @@ export BANNER
 # Default target
 all: $(NAME)
 
-# Create object directory
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
-# Compile object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	@echo "$(GREEN)✓ Compiled: $<$(RESET)"
-
 # Link executable
-$(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LDFLAGS) -o $(NAME)
+$(NAME): $(SRCS)
+	@$(CC) $(SRCS) $(LDFLAGS) -o $(NAME)
 	@echo "$(GREEN)✓ Minishell compiled successfully!$(RESET)"
 	@echo "$$BANNER"
 
-# Clean object files
 clean:
-	@rm -rf $(OBJ_DIR)
-	@echo "$(RED)✗ Object files removed$(RESET)"
 
 # Clean everything
 fclean: clean
@@ -119,5 +104,9 @@ fclean: clean
 
 # Rebuild
 re: fclean all
+
+valgrind: all
+	clear
+	valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=$(PWD)/good.supp --quiet ./$(NAME)
 
 .PHONY: all clean fclean re
