@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 18:32:26 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/29 04:00:06 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 02:30:20 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,18 @@ void	exec_cmd_in_pipe(t_data *data, t_cmd *cmd, char *cmd_path)
 	if (cmd->redirs)
 	{
 		if (apply_redirections(cmd) != SUCCESS)
-			exit(ERROR);
+			return (cleanup_child(data), free(cmd_path), exit(ERROR));
 	}
 
 	if (is_builtin(cmd->args[0]))
 	{
 		exit_status = exec_builtin(data, cmd);
-		exit(exit_status);
+		return (cleanup_child(data), free(cmd_path), exit(exit_status));
 	}
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
 		print_error(cmd->args[0], "execution failed");
-		exit(CMD_NOT_EXECUTABLE);
+		return (cleanup_child(data), free(cmd_path), exit(CMD_NOT_EXECUTABLE));
 	}
 }
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+         #
+#    By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/26 16:59:28 by ginobile          #+#    #+#              #
-#    Updated: 2025/12/27 20:41:58 by ginobile         ###   ########.fr        #
+#    Updated: 2026/01/05 02:24:16 by gifanell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,12 +91,11 @@ all: $(NAME)
 
 # Link executable
 $(NAME): $(SRCS)
-	@$(CC) $(SRCS) $(LDFLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(SRCS) $(LDFLAGS) -o $(NAME)
 	@echo "$(GREEN)✓ Minishell compiled successfully!$(RESET)"
 	@echo "$$BANNER"
 
 clean:
-
 # Clean everything
 fclean: clean
 	@rm -f $(NAME)

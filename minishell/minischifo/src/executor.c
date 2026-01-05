@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:03 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/26 19:13:00 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 02:26:34 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@
 static void	exec_child_process(t_data *data, t_cmd *cmd, char *cmd_path)
 {
 	if (apply_redirections(cmd) != SUCCESS)
+	{
+		cleanup_child(data);
+		free(cmd_path);
 		exit(ERROR);
+	}
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
 		print_error(cmd->args[0], "execution failed");
+		cleanup_child(data);
 		free(cmd_path);
 		exit(CMD_NOT_EXECUTABLE);
 	}
