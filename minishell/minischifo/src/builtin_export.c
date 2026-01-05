@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:19 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 19:51:22 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 02:11:27 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@ static void	print_single_export(char *env_var)
 	}
 	write(STDOUT_FILENO, "\n", 1);
 }
+/*Stampa export marks (variabili ambientali senza valore)*/
+static void	print_export_marks(t_data *data)
+{
+	int i;
+
+	if (!data->export_marks)
+		return ;
+	i = 0;
+	while (data->export_marks[i])
+	{
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(data->export_marks[i], STDOUT_FILENO);
+		write(STDOUT_FILENO, "\n", 1);
+		i++;
+	}
+}
 
 /* Stampa tutte le variabili d'ambiente in formato export */
 static void	print_export_vars(t_data *data)
@@ -49,35 +65,16 @@ static void	print_export_vars(t_data *data)
 		print_single_export(data->envp[i]);
 		i++;
 	}
+	print_export_marks(data);
 }
 
-/* Estrae key e value da una stringa "KEY=VALUE" */
-static int	parse_export_arg(char *arg, char **key, char **value)
+/* Helper: gestisce export con value*/
+static void	handle_export_with_value(char *key, char *value, t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (arg[i] && arg[i] != '=')
-		i++;
-	if (i == 0)
-		return (0);
-	*key = (char *)malloc(sizeof(char) * (i + 1));
-	if (!*key)
-		return (0);
-	ft_strncpy(*key, arg, i);
-	(*key)[i] = '\0';
-	if (arg[i] == '=')
-	{
-		*value = ft_strdup(arg + i + 1);
-		if (!*value)
-		{
-			free(*key);
-			return (-1);
-		}
-		return (1);
-	}
-	*value = NULL;
-	return (0);
+	remove_export_mark(key, data);
+	set_env_value(key, value, data);
+	free(key);
+	free(value);
 }
 
 /* Processa un singolo argomento export */
@@ -89,19 +86,20 @@ static int	process_export_arg(char *arg, t_data *data)
 
 	has_equal = parse_export_arg(arg, &key, &value);
 	if (has_equal == -1)
-	{
-		print_error("export", "invalid identifier");
+		return (print_error("export", "invalid identifier"), ERROR);
+	if (has_equal == 0 && !key)
+		return (print_error("export", "not a valid identifier"), ERROR);
+	if (!validate_export_arg(key, value))
 		return (ERROR);
-	}
 	if (has_equal == 1)
+		handle_export_with_value(key, value, data);
+	else
 	{
-		set_env_value(key, value, data);
-		free(key);
-		free(value);
-		return (SUCCESS);
+		value = get_env_value(key, data->envp);
+		if (!value)
+			add_export_mark(key, data);
 	}
-	free(key);
-	return (SUCCESS);
+	return (free(key), free(value), SUCCESS);
 }
 
 /* Se non ci sono argomenti, stampa tutte le variabili */
