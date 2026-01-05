@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 18:32:26 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 02:30:20 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 03:06:57 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int	wait_all_processes(int *pids, int num_cmds)
 	i = 0;
 	while (i < num_cmds)
 	{
-		waitpid(pids[i], &status, 0);
-		if (i == num_cmds - 1)
+		if (waitpid(pids[i], &status, 0) != -1
+			&& i == num_cmds - 1)
 		{
 			if (WIFEXITED(status))
 				last_status = WEXITSTATUS(status);
