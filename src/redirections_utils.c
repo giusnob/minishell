@@ -71,6 +71,17 @@ static char		*expand_and_append(char *content, char *line, t_data *data)
 	return (tmp);
 }
 
+void	handle_heredoc_signal(int sig)
+{
+	g_signal = sig;
+	close(0);
+}
+
+void	set_heredoc_signal(void)
+{
+	signal(SIGINT, handle_heredoc_signal);
+}
+
 /* Legge il contenuto dell'heredoc e lo ritorna come stringa */
 char	*read_heredoc_content(char *delimiter, t_data *data)
 {
@@ -80,12 +91,15 @@ char	*read_heredoc_content(char *delimiter, t_data *data)
 	content = ft_strdup("");
 	if (!content)
 		return (NULL);
+	set_heredoc_signal();
 	while (1)
 	{
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
+			if (g_signal == SIGINT)
+				return (free(content), NULL);
 			break ;
 		}
 		content = expand_and_append(content, line, data);

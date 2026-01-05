@@ -82,7 +82,6 @@ static int	execute_simple_cmd(t_data *data, t_cmd *cmd)
 	{
 		if (apply_redirections(cmd) != SUCCESS)
 		{
-			restore_std_fds(data);
 			return (ERROR);
 		}
 	}
@@ -91,8 +90,6 @@ static int	execute_simple_cmd(t_data *data, t_cmd *cmd)
 	if (is_builtin(cmd->args[0]))
 	{
 		exit_status = exec_builtin(data, cmd);
-		if (cmd->redirs)
-			restore_std_fds(data);
 		return (exit_status);
 	}
 	return (exec_external_cmd(data, cmd));

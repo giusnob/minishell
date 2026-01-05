@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		process_input(&data, input);
 		free(input);
+		restore_std_fds(&data);
 	}
-	cleanup_data(&data);
-	return (data.last_exit_status);
+	return (cleanup_data(&data), data.last_exit_status);
 }
