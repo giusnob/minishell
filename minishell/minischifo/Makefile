@@ -108,6 +108,6 @@ re: fclean all
 
 valgrind: all
 	clear
-	valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=$(PWD)/good.supp --quiet ./$(NAME)
+	valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --trace-children=yes --suppressions=$(PWD)/good.supp --quiet ./$(NAME)
 
 .PHONY: all clean fclean re
