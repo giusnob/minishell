@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2026/01/05 02:42:33 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 03:14:17 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_data
 {
 	int				*cmds_pids;		//array of all commands (children) pids
 	char			**envp;			// environment variables
+	char			**export_marks; // variabili marked for export (no value)
 	t_cmd			*cmd_list;		// lista dei comandi
 	int				last_exit_status;	// exit status dell'ultimo comando ($?)
 	int				stdin_backup;	// backup di stdin
