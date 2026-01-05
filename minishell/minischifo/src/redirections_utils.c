@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 19:17:17 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 15:43:54 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 03:54:50 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*append_line_to_content(char *content, char *line)
 }
 
 /* Legge il contenuto dell'heredoc e lo ritorna come stringa */
-char	*read_heredoc_content(char *delimiter)
+char	*read_heredoc_content(char *delimiter, t_data *data)
 {
 	char	*line;
 	char	*content;
@@ -75,7 +75,7 @@ char	*read_heredoc_content(char *delimiter)
 			free(line);
 			break ;
 		}
-		content = append_line_to_content(content, line);
+		content = append_line_to_content(content, line, data);
 		free(line);
 		if (!content)
 			return (NULL);
