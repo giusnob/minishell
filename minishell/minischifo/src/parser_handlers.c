@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:30:01 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 03:53:23 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 04:45:10 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,37 @@ static t_redir_type	get_redir_type(t_token_type token_type)
 	return (REDIR_IN);
 }
 
+static int	contains_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 /* Aggiunge UN SINGOLO argomento al comando */
 int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
 {
 	int		count;
 	char	**new_args;
+	char	**split_words;
 
 	count = count_current_args(cmd->args);
+	if (count == 0 && contains_space((*tokens)->value))
+	{
+		split_words = ft_split((*tokens)->value, ' ');
+		if (!split_words)
+			return (0);
+		cmd->args = split_words;
+		*tokens = (*tokens)->next;
+		return (1);
+	}
 	new_args = alloc_new_args(count);
 	if (!new_args)
 		return (0);
@@ -54,9 +78,9 @@ int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
 }
 
 /* Helper: processa heredoc in una redirection */
-static int	process_heredoc_redir(t_redir *redir, char *delimiter)
+static int	process_heredoc_redir(t_redir *redir, char *delimiter, t_data *data)
 {
-	redir->heredoc_content = read_heredoc_content(delimiter);
+	redir->heredoc_content = read_heredoc_content(delimiter, data);
 	if (!redir->heredoc_content)
 	{
 		if (redir->file)

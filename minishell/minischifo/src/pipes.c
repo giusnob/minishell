@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:27 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 03:02:16 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 04:57:50 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	execute_pipeline(t_data *data)
 		return (ERROR);
 	}
 	result = wait_all_processes(data->cmds_pids, num_cmds);
-	free(pdata->cmds_pids);
+	free(data->cmds_pids);
 	data->cmds_pids = NULL;
 	return (result);
 }

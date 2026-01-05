@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 19:17:17 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 03:54:50 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 04:56:45 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,19 @@ static char	*append_line_to_content(char *content, char *line)
 	return (result);
 }
 
+static char		*expand_and_append(char *content, char *line, t_data *data)
+{
+	char	*expanded;
+	char	*tmp;
+
+	expanded = expand_variables(line, data);
+	if (!expanded)
+		return (NULL);
+	tmp = append_line_to_content(content, expanded);
+	free(expanded);
+	return (tmp);
+}
+
 /* Legge il contenuto dell'heredoc e lo ritorna come stringa */
 char	*read_heredoc_content(char *delimiter, t_data *data)
 {
@@ -75,7 +88,7 @@ char	*read_heredoc_content(char *delimiter, t_data *data)
 			free(line);
 			break ;
 		}
-		content = append_line_to_content(content, line, data);
+		content = expand_and_append(content, line, data);
 		free(line);
 		if (!content)
 			return (NULL);

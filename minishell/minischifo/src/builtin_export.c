@@ -6,11 +6,17 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:19 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 02:11:27 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 05:22:03 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	print_single_export(char *env_var);
+static int	process_export_arg(char *arg, t_data *data);
+static void	handle_export_with_value(char *key, char *value, t_data *data);
+static void	print_export_marks(t_data *data);
+static void	print_export_vars(t_data *data);
 
 /* Stampa una singola variabile export */
 static void	print_single_export(char *env_var)
@@ -73,8 +79,6 @@ static void	handle_export_with_value(char *key, char *value, t_data *data)
 {
 	remove_export_mark(key, data);
 	set_env_value(key, value, data);
-	free(key);
-	free(value);
 }
 
 /* Processa un singolo argomento export */

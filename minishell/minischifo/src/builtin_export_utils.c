@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 00:59:45 by gifanell          #+#    #+#             */
-/*   Updated: 2026/01/05 02:09:11 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 05:11:26 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int parse_export_arg(char *arg, char **key, char **value)
         i++;
     if (i == 0)
         return (0);
-    *key = extract_value(arg, i);
+    *key = extract_key(arg, i);
     if (!*key)
         return (-1);
     if (arg[i] == '=')

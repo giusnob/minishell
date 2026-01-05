@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2026/01/05 03:14:17 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 05:10:05 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ int					builtin_exit(char **args, t_data *data);
 
 /* === BUILTIN EXPORT UTILS === */
 int					is_valid_identifier(char *key);
-char				*extract_key(char **arg, int len);
+char				*extract_key(char *arg, int len);
 int					validate_export_arg(char *key, char *value);
 int					parse_export_arg(char *arg, char **key, char **value);
 

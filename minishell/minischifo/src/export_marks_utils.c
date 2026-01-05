@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 01:50:35 by gifanell          #+#    #+#             */
-/*   Updated: 2026/01/05 02:08:06 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 05:25:28 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    add_export_mark(char *key, t_data *data)
 
     count = count_marks(data->export_marks);
     new_marks = (char **)malloc(sizeof(char *) * (count + 2));
-    if (!marks)
+    if (!new_marks)
         return ;
     i = 0;
     while (i < count)

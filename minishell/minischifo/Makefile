@@ -6,7 +6,7 @@
 #    By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/26 16:59:28 by ginobile          #+#    #+#              #
-#    Updated: 2026/01/05 02:24:16 by gifanell         ###   ########.fr        #
+#    Updated: 2026/01/05 05:24:26 by gifanell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/expand.c \
 			  $(SRC_DIR)/expand_utils.c \
 			  $(SRC_DIR)/expand_helpers.c \
+			  $(SRC_DIR)/export_marks_utils.c \
 			  $(SRC_DIR)/redirections.c \
 			  $(SRC_DIR)/redirections_utils.c \
 			  $(SRC_DIR)/pipes.c \
@@ -60,6 +61,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/builtin_cd.c \
 			  $(SRC_DIR)/builtin_pwd.c \
 			  $(SRC_DIR)/builtin_export.c \
+			  $(SRC_DIR)/builtin_export_utils.c \
 			  $(SRC_DIR)/builtin_unset.c \
 			  $(SRC_DIR)/builtin_env.c \
 			  $(SRC_DIR)/builtin_exit.c \
