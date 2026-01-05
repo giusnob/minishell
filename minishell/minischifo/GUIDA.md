@@ -21,6 +21,9 @@
 13. [Gestione Memoria](#13-gestione-memoria)
 14. [Error Handling](#14-error-handling)
 15. [Best Practices](#15-best-practices)
+16. [Tips per la Valutazione](#16-tips-per-la-valutazione)
+17. [Fix Recenti e Miglioramenti](#17-fix-recenti-e-miglioramenti)
+18. [Conclusione](#18-conclusione)
 
 ---
 
@@ -144,6 +147,7 @@ hello world
 typedef struct s_data
 {
     char    **envp;              // Environment variables
+    char    **export_marks;      // Variables marked for export (no value)
     t_cmd   *cmd_list;           // Lista comandi parsati
     int     last_exit_status;    // Exit status ultimo comando ($?)
     int     stdin_backup;        // Backup stdin originale
@@ -156,6 +160,7 @@ typedef struct s_data
 | Campo | Tipo | Descrizione | Esempio |
 |-------|------|-------------|---------|
 | `envp` | `char**` | Copia modificabile dell'environment | `["PATH=/bin", "HOME=/Users/giusmery", NULL]` |
+| `export_marks` | `char**` | Variabili marcate per export senza valore | `["TESTVAR", "MYVAR", NULL]` |
 | `cmd_list` | `t_cmd*` | Lista linked di comandi da eseguire | Punta al primo comando |
 | `last_exit_status` | `int` | Exit code ultimo comando (per `$?`) | `0` (success), `127` (not found) |
 | `stdin_backup` | `int` | File descriptor backup di stdin | Usato per restore dopo redirections |
@@ -6222,9 +6227,136 @@ cat |   # syntax error
 
 ---
 
-# 17. CONCLUSIONE
+# 17. FIX RECENTI E MIGLIORAMENTI
 
-## 17.1 Architettura Finale
+## 17.1 Export Marks System
+
+**Problema risolto:** `export VAR` senza valore non appariva in `export`
+
+**Implementazione:**
+- Aggiunto campo `export_marks` a `t_data`
+- Variabili marcate per export ma senza valore vengono salvate separatamente
+- `export` senza args mostra sia `envp` che `export_marks`
+- `env` mostra solo `envp` (variabili con valore)
+
+**File modificati:**
+- `includes/minishell.h` - aggiunto `export_marks` a `t_data`
+- `src/export_marks_utils.c` - NUOVO FILE con funzioni helper
+- `src/builtin_export.c` - integrazione export marks
+- `src/init.c` - inizializzazione e cleanup
+
+**Test:**
+```bash
+export VAR          # Marca VAR per export
+export | grep VAR   # Appare: declare -x VAR
+env | grep VAR      # Non appare
+export VAR=hello    # Ora ha valore
+env | grep VAR      # Appare: VAR=hello
+```
+
+---
+
+## 17.2 Word Splitting After Expansion
+
+**Problema risolto:** `export a="cho ciao"; e$a` cercava comando `"echo ciao"` invece di splittare
+
+**Implementazione:**
+- Dopo espansione variabili, se il primo argomento contiene spazi, viene splittato
+- Usa `ft_split(value, ' ')` per dividere in argomenti separati
+- SOLO per args[0] (comando), non per tutti gli argomenti
+
+**File modificati:**
+- `src/parser_handlers.c` - aggiunta funzione `contains_space()` e logica split
+
+**Test:**
+```bash
+export a="cho ciao"
+e$a                 # Espande → echo ciao → stampa: ciao
+```
+
+---
+
+## 17.3 Edge Case: echo $"VAR"
+
+**Problema risolto:** `echo $"PATH"` stampava `$PATH` invece di `PATH`
+
+**Implementazione:**
+- Nel lexer, quando vede `$` seguito immediatamente da `"`, ignora il `$`
+- Ritorna stringa vuota per `$`, poi le doppie quote gestiscono il contenuto
+
+**File modificati:**
+- `src/lexer_helpers.c` - check speciale in `extract_word_part()`
+
+**Test:**
+```bash
+echo $"PATH"   # Stampa: PATH (non $PATH)
+echo $"USER"   # Stampa: USER
+```
+
+---
+
+## 17.4 Memory Leak Fix
+
+**Problema risolto:** Memory leak nei processi figli quando `execve` falliva
+
+**Implementazione:**
+- Creata funzione `cleanup_child()` che libera memoria senza chiamare `clear_history()`
+- Chiamata prima di ogni `exit()` nei processi figli
+- Libera: `envp`, `export_marks`, `cmd_list`, chiude `stdin_backup` e `stdout_backup`
+
+**File modificati:**
+- `src/init.c` - aggiunta funzione `cleanup_child()`
+- `src/executor.c` - chiamata `cleanup_child()` prima di exit
+- `src/pipes_utils.c` - chiamata `cleanup_child()` prima di exit
+
+**Test con valgrind:**
+```bash
+valgrind --leak-check=full --suppressions=readline.supp ./minishell
+sudo ls    # Comando che fallisce per permessi
+exit       # No leak!
+```
+
+---
+
+## 17.5 Export Validation
+
+**Problema risolto:** Export accettava identificatori invalidi (`1TEST`, `TEST-VAR`, `=value`)
+
+**Implementazione:**
+- Validazione identificatori: primo char deve essere lettera o `_`
+- Caratteri successivi: alfanumerici o `_`
+- Reject: numeri all'inizio, trattini, solo `=`
+
+**File modificati:**
+- `src/builtin_export_utils.c` - funzione `is_valid_identifier()`
+- `src/builtin_export.c` - validazione in `process_export_arg()`
+
+**Test:**
+```bash
+export 1TEST=value      # Errore: not a valid identifier
+export TEST-VAR=value   # Errore: not a valid identifier  
+export =value           # Errore: not a valid identifier
+export TEST=value       # OK
+```
+
+---
+
+## 17.6 Readline Suppressions
+
+**Aggiunto:** File `readline.supp` per valgrind
+
+**Contenuto:** Suppression patterns per leak "still reachable" di readline/history
+
+**Uso:**
+```bash
+valgrind --leak-check=full --suppressions=readline.supp ./minishell
+```
+
+---
+
+# 18. CONCLUSIONE
+
+## 18.1 Architettura Finale
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -6237,7 +6369,7 @@ INPUT → LEXER → PARSER → EXPANDER → EXECUTOR → OUTPUT
                                    (fork/exec)
 ```
 
-## 17.2 Moduli Implementati
+## 18.2 Moduli Implementati
 
 | Modulo | Responsabilità | Files |
 |--------|----------------|-------|
@@ -6255,7 +6387,7 @@ INPUT → LEXER → PARSER → EXPANDER → EXECUTOR → OUTPUT
 
 ---
 
-## 17.3 Features Implementate
+## 18.3 Features Implementate
 
 ### ✅ Mandatory
 - Prompt interattivo
@@ -6272,7 +6404,7 @@ INPUT → LEXER → PARSER → EXPANDER → EXECUTOR → OUTPUT
 
 ---
 
-## 17.4 Statistiche Progetto
+## 18.4 Statistiche Progetto
 
 ```
 Files:           ~35 .c files + 1 .h

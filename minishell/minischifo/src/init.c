@@ -27,6 +27,8 @@ void	cleanup_data(t_data *data)
 {
 	if (data->envp)
 		free_envp(data->envp);
+	if (data->export_marks)
+		free_envp(data->export_marks);
 	if (data->cmd_list)
 		free_cmd_list(data->cmd_list);
 	close(data->stdin_backup);

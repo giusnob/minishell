@@ -26,6 +26,7 @@ static void	exec_child_process(t_data *data, t_cmd *cmd, char *cmd_path)
 		print_error(cmd->args[0], "execution failed");
 		cleanup_child(data);
 		free(cmd_path);
+		cleanup_child(data);
 		exit(CMD_NOT_EXECUTABLE);
 	}
 }
