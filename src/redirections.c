@@ -52,11 +52,9 @@ static int	apply_single_redir(t_redir *redir, int fd)
 		target_fd = STDOUT_FILENO;
 	if (dup2(fd, target_fd) == -1)
 	{
-		close(fd);
 		print_error("dup2", "failed");
 		return (ERROR);
 	}
-	close(fd);
 	return (SUCCESS);
 }
 
@@ -73,8 +71,10 @@ int	apply_redirections(t_cmd *cmd)
 		fd = open_redir_file(redir);
 		if (fd == -1)
 			return (ERROR);
-		if (apply_single_redir(redir, fd) == ERROR)
-			return (ERROR);
+		if (cmd->args && cmd->args[0]
+			&& apply_single_redir(redir, fd) == ERROR)
+			return (close(fd), ERROR);
+		close(fd);
 		redir = redir->next;
 	}
 	return (SUCCESS);
