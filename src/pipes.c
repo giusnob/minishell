@@ -39,11 +39,8 @@ static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
 	pid_t	pid;
 	char	*cmd_path;
 
-	if (cmd->redirs)
-	{
-		if (apply_redirections(cmd) != SUCCESS)
-			return (ERROR);
-	}
+	if (cmd->redirs && (apply_redirections(cmd) != SUCCESS))
+		return (ERROR);
 	cmd_path = get_cmd_path_for_pipe(cmd, data->envp);
 	if (!cmd_path && !is_builtin(cmd->args[0]))
 		return (CMD_NOT_FOUND);
@@ -57,12 +54,12 @@ static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		setup_child_pipes(pipe_data);
 		exec_cmd_in_pipe(data, cmd, cmd_path);
 	}
-	if (cmd_path)
-		free(cmd_path);
-	return (pid);
+	return (free(cmd_path), pid);
 }
 
 /* Processa un singolo comando della pipeline */

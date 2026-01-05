@@ -23,24 +23,10 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-/* Gestisce Ctrl-\ (SIGQUIT) */
-void	handle_sigquit(int sig)
-{
-	char	*line;
-
-	(void)sig;
-	line = rl_line_buffer;
-	if (line && *line)
-	{
-		write(STDOUT_FILENO, "\nQuit\n", 6);
-		rl_on_new_line();
-		exit(131);
-	}
-}
 
 /* Setup dei segnali */
 void	setup_signals(void)
 {
 	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, handle_sigquit);
+	signal(SIGQUIT, SIG_IGN);
 }

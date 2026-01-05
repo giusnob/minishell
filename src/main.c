@@ -30,6 +30,8 @@ static void	process_input(t_data *data, char *input)
 		data->last_exit_status = executor(data);
 	free_cmd_list(data->cmd_list);
 	data->cmd_list = NULL;
+	if (data->last_exit_status == 131)
+		write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 }
 
 int	main(int argc, char **argv, char **envp)

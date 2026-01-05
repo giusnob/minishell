@@ -15,6 +15,8 @@
 /* Esegue il comando nel processo figlio */
 static void	exec_child_process(t_data *data, t_cmd *cmd, char *cmd_path)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
 		print_error(cmd->args[0], "execution failed");
