@@ -68,11 +68,6 @@ static t_cmd	*process_command(t_token **tokens, t_data *data)
 		return (NULL);
 	}
 	*tokens = current;
-	if (!cmd->args)
-	{
-		free_cmd(cmd);
-		return (NULL);
-	}
 	return (cmd);
 }
 

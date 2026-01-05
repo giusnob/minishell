@@ -39,6 +39,11 @@ static int	exec_pipeline_cmd(t_data *data, t_cmd *cmd, t_pipe_data *pipe_data)
 	pid_t	pid;
 	char	*cmd_path;
 
+	if (cmd->redirs)
+	{
+		if (apply_redirections(cmd) != SUCCESS)
+			return (ERROR);
+	}
 	cmd_path = get_cmd_path_for_pipe(cmd, data->envp);
 	if (!cmd_path && !is_builtin(cmd->args[0]))
 		return (CMD_NOT_FOUND);

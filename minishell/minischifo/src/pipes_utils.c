@@ -38,11 +38,6 @@ void	exec_cmd_in_pipe(t_data *data, t_cmd *cmd, char *cmd_path)
 {
 	int	exit_status;
 
-	if (cmd->redirs)
-	{
-		if (apply_redirections(cmd) != SUCCESS)
-			return (cleanup_child(data), free(cmd_path), exit(ERROR));
-	}
 	if (is_builtin(cmd->args[0]))
 	{
 		exit_status = exec_builtin(data, cmd);

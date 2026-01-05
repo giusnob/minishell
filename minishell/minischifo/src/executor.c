@@ -15,12 +15,6 @@
 /* Esegue il comando nel processo figlio */
 static void	exec_child_process(t_data *data, t_cmd *cmd, char *cmd_path)
 {
-	if (apply_redirections(cmd) != SUCCESS)
-	{
-		cleanup_child(data);
-		free(cmd_path);
-		exit(ERROR);
-	}
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
 		print_error(cmd->args[0], "execution failed");
@@ -84,18 +78,18 @@ static int	execute_simple_cmd(t_data *data, t_cmd *cmd)
 {
 	int	exit_status;
 
+	if (cmd->redirs)
+	{
+		if (apply_redirections(cmd) != SUCCESS)
+		{
+			restore_std_fds(data);
+			return (ERROR);
+		}
+	}
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (SUCCESS);
 	if (is_builtin(cmd->args[0]))
 	{
-		if (cmd->redirs)
-		{
-			if (apply_redirections(cmd) != SUCCESS)
-			{
-				restore_std_fds(data);
-				return (ERROR);
-			}
-		}
 		exit_status = exec_builtin(data, cmd);
 		if (cmd->redirs)
 			restore_std_fds(data);
