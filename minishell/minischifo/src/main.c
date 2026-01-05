@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:02:59 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 02:19:48 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/05 03:10:21 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		input = readline("minishell$ ");
+		if (g_signal == SIGINT)
+		{
+			g_signal = -1;
+			data.last_exit_status = 130;
+		}
 		if (!input)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);
