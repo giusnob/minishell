@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2025/12/27 22:27:35 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 02:42:33 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_cmd
 /* Struttura principale - minishell data */
 typedef struct s_data
 {
+	int				*cmds_pids;		//array of all commands (children) pids
 	char			**envp;			// environment variables
 	t_cmd			*cmd_list;		// lista dei comandi
 	int				last_exit_status;	// exit status dell'ultimo comando ($?)
@@ -109,6 +110,7 @@ extern int			g_signal;
 /* === MAIN === */
 void				init_data(t_data *data, char **envp);
 void				cleanup_data(t_data *data);
+void				cleanup_child(t_data *data);
 
 /* === SIGNALS === */
 void				setup_signals(void);
@@ -134,7 +136,7 @@ t_token				*handle_redir_in(char **input);
 t_token				*handle_redir_out(char **input);
 
 /* === PARSER === */
-t_cmd				*parser(t_token *tokens);
+t_cmd				*parser(t_token *tokens, t_data *data);
 int					validate_tokens(t_token *tokens);
 void				free_cmd(t_cmd *cmd);
 void				free_cmd_list(t_cmd *cmd_list);
@@ -148,8 +150,8 @@ void				add_cmd(t_cmd **head, t_cmd *new_cmd);
 
 /* === PARSER HANDLERS === */
 int					add_args_to_cmd(t_cmd *cmd, t_token **tokens);
-int					handle_redirection(t_cmd *cmd, t_token **tokens);
-int					process_token(t_cmd *cmd, t_token **current);
+int					handle_redirection(t_cmd *cmd, t_token **tokens, t_data *data);
+int					process_token(t_cmd *cmd, t_token **current, t_data *data);
 int					count_current_args(char **args);
 char				**alloc_new_args(int count);
 void				copy_old_args(char **new_args, char **old_args, int count);
@@ -181,7 +183,7 @@ void				restore_std_fds(t_data *data);
 /* === REDIRECTIONS UTILS === */
 int					ft_strlen_custom(char *str);
 int					handle_heredoc(char *content);
-char				*read_heredoc_content(char *delimiter);
+char				*read_heredoc_content(char *delimiter, t_data *data);
 
 /* === PIPES === */
 int					execute_pipeline(t_data *data);
@@ -214,12 +216,24 @@ int					builtin_unset(char **args, t_data *data);
 int					builtin_env(t_data *data);
 int					builtin_exit(char **args, t_data *data);
 
+/* === BUILTIN EXPORT UTILS === */
+int					is_valid_identifier(char *key);
+char				*extract_key(char **arg, int len);
+int					validate_export_arg(char *key, char *value);
+int					parse_export_arg(char *arg, char **key, char **value);
+
+
 /* === ENV UTILS === */
 char				*get_env_value(char *key, char **envp);
 char				**copy_envp(char **envp);
 void				free_envp(char **envp);
 int					set_env_value(char *key, char *value, t_data *data);
 int					unset_env_value(char *key, t_data *data);
+
+/* === EXPORT MARKS === */
+void				add_export_mark(char *key, t_data *data);
+void				remove_export_mark(char *key, t_data *data);
+int					is_marked_for_export(char *key, t_data *data);
 
 /* === UTILS === */
 char				*ft_strdup(const char *s);

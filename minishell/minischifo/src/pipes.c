@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:27 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/29 04:53:14 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 03:02:16 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,24 @@ int	process_pipeline_cmd(t_data *data, t_cmd *current,
 /* Aspetta tutti i processi */
 int	execute_pipeline(t_data *data)
 {
-	int	*pids;
 	int	num_cmds;
 	int	prev_pipe[2];
 	int	has_prev;
 	int	result;
 
-	pids = init_pipeline(data, &num_cmds);
-	if (!pids)
+	data->cmds_pids = init_pipeline(data, &num_cmds);
+	if (!data->cmds_pids)
 		return (ERROR);
 	has_prev = 0;
-	result = pipeline_loop(data, pids, prev_pipe, &has_prev);
+	result = pipeline_loop(data, data->cmds_pids, prev_pipe, &has_prev);
 	if (result == -1)
 	{
-		free(pids);
+		free(data->cmds_pids);
+		data->cmds_pids = NULL;
 		return (ERROR);
 	}
-	result = wait_all_processes(pids, num_cmds);
-	free(pids);
+	result = wait_all_processes(data->cmds_pids, num_cmds);
+	free(pdata->cmds_pids);
+	data->cmds_pids = NULL;
 	return (result);
 }

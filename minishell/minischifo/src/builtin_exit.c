@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:12 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 21:51:15 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/05 02:48:47 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	cleanup_for_exit(t_data *data)
 	close(data->stdin_backup);
 	close(data->stdout_backup);
 	free_cmd_list(data->cmd_list);
+	free(data->cmds_pids);
 	clear_history();
 }
 
