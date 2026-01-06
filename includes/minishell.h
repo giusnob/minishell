@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 14:16:57 by giusmerynob       #+#    #+#             */
-/*   Updated: 2026/01/05 05:10:05 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/07 00:02:29 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_data
 	char			**envp;			// environment variables
 	char			**export_marks; // variabili marked for export (no value)
 	t_cmd			*cmd_list;		// lista dei comandi
-	int				last_exit_status;	// exit status dell'ultimo comando ($?)
+	int				last_exit_status;	//exit status dell'ultimo comando ($?)
 	int				stdin_backup;	// backup di stdin
 	int				stdout_backup;	// backup di stdout
 }	t_data;
@@ -151,7 +151,8 @@ void				add_cmd(t_cmd **head, t_cmd *new_cmd);
 
 /* === PARSER HANDLERS === */
 int					add_args_to_cmd(t_cmd *cmd, t_token **tokens);
-int					handle_redirection(t_cmd *cmd, t_token **tokens, t_data *data);
+int					handle_redirection(t_cmd *cmd, t_token **tokens,
+						t_data *data);
 int					process_token(t_cmd *cmd, t_token **current, t_data *data);
 int					count_current_args(char **args);
 char				**alloc_new_args(int count);
@@ -222,7 +223,6 @@ int					is_valid_identifier(char *key);
 char				*extract_key(char *arg, int len);
 int					validate_export_arg(char *key, char *value);
 int					parse_export_arg(char *arg, char **key, char **value);
-
 
 /* === ENV UTILS === */
 char				*get_env_value(char *key, char **envp);

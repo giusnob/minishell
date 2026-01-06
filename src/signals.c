@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:38 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 03:10:42 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/06 23:59:56 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	handle_sigint(int sig)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
-
 
 /* Setup dei segnali */
 void	setup_signals(void)

@@ -6,15 +6,15 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 00:59:45 by gifanell          #+#    #+#             */
-/*   Updated: 2026/01/05 05:11:26 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/07 00:05:41 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int is_valid_identifier(char *key)
+int	is_valid_identifier(char *key)
 {
-	int i;
+	int	i;
 
 	if (!key || !key[0])
 		return (0);
@@ -36,9 +36,9 @@ int is_valid_identifier(char *key)
 }
 
 /* Alloca e copia la key */
-char    *extract_key(char *arg, int len)
+char	*extract_key(char *arg, int len)
 {
-	char    *key;
+	char	*key;
 
 	key = (char *)malloc(sizeof(char) * (len + 1));
 	if (!key)
@@ -49,7 +49,7 @@ char    *extract_key(char *arg, int len)
 }
 
 /*Helper per validazione export*/
-int validate_export_arg(char *key, char *value)
+int	validate_export_arg(char *key, char *value)
 {
 	if (!is_valid_identifier(key))
 	{
@@ -63,7 +63,7 @@ int validate_export_arg(char *key, char *value)
 }
 
 /* estrae valore dopo '=' */
-static int  extract_value(char *arg, int i, char **key, char **value)
+static int	extract_value(char *arg, int i, char **key, char **value)
 {
 	*value = ft_strdup(arg + i + 1);
 	if (!*value)
@@ -76,9 +76,9 @@ static int  extract_value(char *arg, int i, char **key, char **value)
 }
 
 /* Estrae key e value da una stringa "KEY=VALUE" */
-int parse_export_arg(char *arg, char **key, char **value)
+int	parse_export_arg(char *arg, char **key, char **value)
 {
-	int i;
+	int	i;
 
 	*key = NULL;
 	*value = NULL;

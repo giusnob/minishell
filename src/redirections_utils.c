@@ -6,7 +6,7 @@
 /*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 19:17:17 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/05 04:56:45 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/06 23:59:42 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*append_line_to_content(char *content, char *line)
 	return (result);
 }
 
-static char		*expand_and_append(char *content, char *line, t_data *data)
+static char	*expand_and_append(char *content, char *line, t_data *data)
 {
 	char	*expanded;
 	char	*tmp;
