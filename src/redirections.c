@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ginobile <ginobile@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gifanell <gifanell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:03:33 by ginobile          #+#    #+#             */
-/*   Updated: 2025/12/27 14:06:34 by ginobile         ###   ########.fr       */
+/*   Updated: 2026/01/07 17:37:40 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static int	open_redir_file(t_redir *redir)
 	{
 		fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
-			print_error(redir->file, "cannot create file");
+			print_error(redir->file, "Permission denied");
 	}
 	else if (redir->type == REDIR_APPEND)
 	{
 		fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
-			print_error(redir->file, "cannot create file");
+			print_error(redir->file, "Permission denied");
 	}
 	else if (redir->type == REDIR_HEREDOC)
 		fd = handle_heredoc(redir->heredoc_content);
