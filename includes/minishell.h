@@ -115,8 +115,8 @@ void				cleanup_child(t_data *data);
 
 /* === SIGNALS === */
 void				setup_signals(void);
-void				handle_sigquit(int sig);
 void				handle_sigint(int sig);
+void				set_heredoc_signal(void);
 
 /* === LEXER === */
 t_token				*lexer(char *input, t_data *data);
