@@ -12,15 +12,18 @@
 
 #include "../includes/minishell.h"
 
-/* Strlen personalizzato per evitare conflitti */
-int	ft_strlen_custom(char *str)
+/* Determina il tipo di redirection */
+t_redir_type	get_redir_type(t_token_type token_type)
 {
-	int	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
+	if (token_type == TOKEN_REDIR_IN)
+		return (REDIR_IN);
+	else if (token_type == TOKEN_REDIR_OUT)
+		return (REDIR_OUT);
+	else if (token_type == TOKEN_REDIR_APPEND)
+		return (REDIR_APPEND);
+	else if (token_type == TOKEN_REDIR_HEREDOC)
+		return (REDIR_HEREDOC);
+	return (REDIR_IN);
 }
 
 /* Gestisce heredoc (<<) */
@@ -69,17 +72,6 @@ static char	*expand_and_append(char *content, char *line, t_data *data)
 	tmp = append_line_to_content(content, expanded);
 	free(expanded);
 	return (tmp);
-}
-
-void	handle_heredoc_signal(int sig)
-{
-	g_signal = sig;
-	close(0);
-}
-
-void	set_heredoc_signal(void)
-{
-	signal(SIGINT, handle_heredoc_signal);
 }
 
 /* Legge il contenuto dell'heredoc e lo ritorna come stringa */
