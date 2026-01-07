@@ -65,13 +65,8 @@ int	add_args_to_cmd(t_cmd *cmd, t_token **tokens)
 	copy_old_args(new_args, cmd->args, count);
 	new_args[count] = ft_strdup((*tokens)->value);
 	if (!new_args[count])
-	{
-		free(new_args);
-		return (0);
-	}
-	new_args[count + 1] = NULL;
-	if (cmd->args)
-		free(cmd->args);
+		return (free(new_args), 0);
+	free(cmd->args);
 	cmd->args = new_args;
 	*tokens = (*tokens)->next;
 	return (1);

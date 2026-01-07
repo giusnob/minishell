@@ -39,8 +39,7 @@ char	*extract_word_part(char **input, t_data *data)
 	word[len] = '\0';
 	*input += len;
 	expanded = expand_variables(word, data);
-	free(word);
-	return (expanded);
+	return (free(word), expanded);
 }
 
 /* Legge la prossima parte (quote o word) */

@@ -30,8 +30,14 @@ int	count_current_args(char **args)
 char	**alloc_new_args(int count)
 {
 	char	**new_args;
+	int		i;
 
 	new_args = (char **)malloc(sizeof(char *) * (count + 2));
+	if (!new_args)
+		return (NULL);
+	i = -1;
+	while (++i < count + 2)
+		new_args[i] = NULL;
 	return (new_args);
 }
 
