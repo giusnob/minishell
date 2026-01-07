@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gifanell <giuliafanelli111@gmail.com>      +#+  +:+       +#+        */
+/*   By: gifanell <gifanell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:00:19 by ginobile          #+#    #+#             */
-/*   Updated: 2026/01/07 00:04:01 by gifanell         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:28:55 by gifanell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,13 @@ static char	**copy_array(char **arr)
 	i = 0;
 	while (i < len)
 	{
-		copy[i] = arr[i];// Copia solo i puntatori, non le stringhe
+		copy[i] = arr[i];
 		i++;
 	}
 	copy[i] = NULL;
 	return (copy);
 }
 
-/*Stampa export marks (variabili ambientali senza valore)*/
 static void	sort_export_array(char **arr)
 {
 	int		i;
@@ -97,6 +96,7 @@ static void	sort_export_array(char **arr)
 	}
 }
 
+/*Stampa export marks (variabili ambientali senza valore)*/
 static void	print_export_marks(t_data *data)
 {
 	int		i;
@@ -104,7 +104,7 @@ static void	print_export_marks(t_data *data)
 
 	if (!data->export_marks)
 		return ;
-	sorted = copy_array(data->export_marks);// Usa la funzione dell'opzione 2
+	sorted = copy_array(data->export_marks);
 	if (!sorted)
 		return ;
 	sort_export_array(sorted);
