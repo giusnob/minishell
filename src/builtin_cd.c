@@ -103,6 +103,8 @@ int	builtin_cd(char **args, t_data *data)
 {
 	char	old_pwd[1024];
 
+	if (args[0] && args[1] && args[2])
+		return (print_error("cd", "too many arguments"), ERROR);
 	if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
 		old_pwd[0] = '\0';
 	if (!args[1])
