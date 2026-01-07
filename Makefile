@@ -70,7 +70,8 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/utils.c \
 			  $(SRC_DIR)/utils2.c \
 			  $(SRC_DIR)/utils_fd.c \
-			  $(SRC_DIR)/error.c
+			  $(SRC_DIR)/error.c \
+			  $(SRC_DIR)/cmd_utils.c
 
 # Banner
 define BANNER

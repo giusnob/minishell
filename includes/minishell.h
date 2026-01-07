@@ -178,6 +178,10 @@ char				*expand_variables(char *str, t_data *data);
 int					executor(t_data *data);
 char				*find_command_path(char *cmd, char **envp);
 
+/* === CMD UTILS === */
+int					cmd_has_input_redir(t_cmd *cmd);
+int					cmd_has_output_redir(t_cmd *cmd);
+
 /* === REDIRECTIONS === */
 int					apply_redirections(t_cmd *cmd);
 void				restore_std_fds(t_data *data);
@@ -203,7 +207,7 @@ int					wait_all_processes(int *pids, int num_cmds);
 void				close_pipes(int *pipe_fd);
 void				save_pipe(int *prev_pipe, int *pipe_fd, int *has_prev);
 int					*init_pipeline(t_data *data, int *num_cmds);
-void				setup_child_pipes(t_pipe_data *pipe_data);
+void				setup_child_pipes(t_cmd *cmd, t_pipe_data *pipe_data);
 int					pipeline_loop(t_data *data, int *pids, int *prev_pipe,
 						int *has_prev);
 

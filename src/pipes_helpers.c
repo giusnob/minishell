@@ -38,18 +38,20 @@ int	*init_pipeline(t_data *data, int *num_cmds)
 }
 
 /* Setup redirection per il figlio nella pipe */
-void	setup_child_pipes(t_pipe_data *pipe_data)
+void	setup_child_pipes(t_cmd *cmd, t_pipe_data *pipe_data)
 {
+	if (!cmd_has_input_redir(cmd) && pipe_data->prev_pipe[0] != -1)
+		dup2(pipe_data->prev_pipe[0], STDIN_FILENO);
 	if (pipe_data->prev_pipe[0] != -1)
 	{
-		dup2(pipe_data->prev_pipe[0], STDIN_FILENO);
 		close(pipe_data->prev_pipe[0]);
 		close(pipe_data->prev_pipe[1]);
 	}
+	if (!cmd_has_output_redir(cmd) && !pipe_data->is_last)
+		dup2(pipe_data->curr_pipe[1], STDOUT_FILENO);
 	if (!pipe_data->is_last)
 	{
 		close(pipe_data->curr_pipe[0]);
-		dup2(pipe_data->curr_pipe[1], STDOUT_FILENO);
 		close(pipe_data->curr_pipe[1]);
 	}
 }
