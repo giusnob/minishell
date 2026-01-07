@@ -29,3 +29,14 @@ void	setup_signals(void)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
+
+void	handle_heredoc_signal(int sig)
+{
+	g_signal = sig;
+	close(0);
+}
+
+void	set_heredoc_signal(void)
+{
+	signal(SIGINT, handle_heredoc_signal);
+}

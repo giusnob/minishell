@@ -12,22 +12,6 @@
 
 #include "../includes/minishell.h"
 
-static t_redir_type	get_redir_type(t_token_type token_type);
-
-/* Determina il tipo di redirection */
-static t_redir_type	get_redir_type(t_token_type token_type)
-{
-	if (token_type == TOKEN_REDIR_IN)
-		return (REDIR_IN);
-	else if (token_type == TOKEN_REDIR_OUT)
-		return (REDIR_OUT);
-	else if (token_type == TOKEN_REDIR_APPEND)
-		return (REDIR_APPEND);
-	else if (token_type == TOKEN_REDIR_HEREDOC)
-		return (REDIR_HEREDOC);
-	return (REDIR_IN);
-}
-
 static int	contains_space(char *str)
 {
 	int	i;

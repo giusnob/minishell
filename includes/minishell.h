@@ -106,7 +106,7 @@ typedef struct s_expand_ctx
 }	t_expand_ctx;
 
 /* Variabile globale per i segnali (unica permessa) */
-extern int			g_signal;
+extern int	g_signal;
 
 /* === MAIN === */
 void				init_data(t_data *data, char **envp);
@@ -115,8 +115,8 @@ void				cleanup_child(t_data *data);
 
 /* === SIGNALS === */
 void				setup_signals(void);
-void				handle_sigquit(int sig);
 void				handle_sigint(int sig);
+void				set_heredoc_signal(void);
 
 /* === LEXER === */
 t_token				*lexer(char *input, t_data *data);
@@ -187,9 +187,9 @@ int					apply_redirections(t_cmd *cmd);
 void				restore_std_fds(t_data *data);
 
 /* === REDIRECTIONS UTILS === */
-int					ft_strlen_custom(char *str);
 int					handle_heredoc(char *content);
 char				*read_heredoc_content(char *delimiter, t_data *data);
+t_redir_type		get_redir_type(t_token_type token_type);
 
 /* === PIPES === */
 int					execute_pipeline(t_data *data);

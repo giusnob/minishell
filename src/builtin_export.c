@@ -14,11 +14,8 @@
 
 static void	print_single_export(char *env_var);
 static int	process_export_arg(char *arg, t_data *data);
-static void	handle_export_with_value(char *key, char *value, t_data *data);
 static void	print_export_marks(t_data *data);
 static void	print_export_vars(t_data *data);
-static void	sort_export_array(char **arr);
-static char	**copy_array(char **arr);
 
 /* Stampa una singola variabile export */
 static void	print_single_export(char *env_var)
@@ -46,77 +43,25 @@ static void	print_single_export(char *env_var)
 	write(STDOUT_FILENO, "\n", 1);
 }
 
-static char	**copy_array(char **arr)
-{
-	int		len;
-	char	**copy;
-	int		i;
-
-	len = 0;
-	while (arr[len])
-		len++;
-	copy = malloc(sizeof(char *) * (len + 1));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		copy[i] = arr[i];
-		i++;
-	}
-	copy[i] = NULL;
-	return (copy);
-}
-
-static void	sort_export_array(char **arr)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*temp;
-
-	len = 0;
-	while (arr[len])
-		len++;
-	i = 0;
-	while (i < len - 1)
-	{
-		j = 0;
-		while (j < len - i - 1)
-		{
-			if (ft_strcmp(arr[j], arr[j + 1]) > 0)
-			{
-				temp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
 /*Stampa export marks (variabili ambientali senza valore)*/
 static void	print_export_marks(t_data *data)
 {
 	int		i;
-	char	**sorted;
+	char	**vars;
 
 	if (!data->export_marks)
 		return ;
-	sorted = copy_array(data->export_marks);
-	if (!sorted)
+	vars = data->export_marks;
+	if (!vars)
 		return ;
-	sort_export_array(sorted);
 	i = 0;
-	while (sorted[i])
+	while (vars[i])
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		ft_putstr_fd(sorted[i], STDOUT_FILENO);
+		ft_putstr_fd(vars[i], STDOUT_FILENO);
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
-	free(sorted);
 }
 
 /* Stampa tutte le variabili d'ambiente in formato export */
@@ -131,13 +76,6 @@ static void	print_export_vars(t_data *data)
 		i++;
 	}
 	print_export_marks(data);
-}
-
-/* Helper: gestisce export con value*/
-static void	handle_export_with_value(char *key, char *value, t_data *data)
-{
-	remove_export_mark(key, data);
-	set_env_value(key, value, data);
 }
 
 /* Processa un singolo argomento export */
@@ -155,7 +93,10 @@ static int	process_export_arg(char *arg, t_data *data)
 	if (!validate_export_arg(key, value))
 		return (ERROR);
 	if (has_equal == 1)
-		handle_export_with_value(key, value, data);
+	{
+		remove_export_mark(key, data);
+		set_env_value(key, value, data);
+	}
 	else
 	{
 		value = get_env_value(key, data->envp);
